@@ -1,0 +1,41 @@
+In Spring, the default propagation behavior of a transaction is `PROPAGATION_REQUIRED`. This means that if a method is executed within an
+ existing transactional context, it will participate in that transaction. If there is no active transaction when the method is called,
+  a new transaction will be created for the method.
+
+To understand this better, let's look at the different propagation behaviors available and the default behavior:
+
+1. **PROPAGATION_REQUIRED (Default)**:
+   - If a transactional method is called from within an existing transactional context, it will join the ongoing transaction.
+   - If there is no active transaction when the method is called, a new transaction will be created for that method.
+
+2. **PROPAGATION_REQUIRES_NEW**:
+   - A new transaction will always be started for the method, regardless of whether there is an ongoing transaction or not.
+   - The ongoing transaction (if any) will be suspended while the method's transaction is active.
+
+3. **PROPAGATION_NESTED**:
+   - A nested transaction is started if there is an ongoing transaction.
+   - The nested transaction behaves like a savepoint within the existing transaction. If the nested transaction fails,
+   it will only rollback to the savepoint, not affecting the outer transaction.
+   - If there is no active transaction when the method is called, a new transaction will be started, similar to `PROPAGATION_REQUIRED`.
+
+4. **PROPAGATION_SUPPORTS**:
+   - The method does not require a transactional context to be executed.
+   - If there is an ongoing transaction, the method will participate in that transaction. Otherwise, it will be executed without a transaction.
+
+5. **PROPAGATION_NOT_SUPPORTED**:
+   - The method will be executed without a transactional context.
+   - If there is an ongoing transaction, it will be suspended while the method is executed.
+
+6. **PROPAGATION_MANDATORY**:
+   - The method must be executed within an active transactional context; otherwise, it will throw an exception.
+
+7. **PROPAGATION_NEVER**:
+   - The method must not be executed within an active transactional context; otherwise, it will throw an exception.
+
+8. **PROPAGATION_REQUIRED, READ_ONLY**:
+   - Similar to `PROPAGATION_REQUIRED`, but indicates that the transaction will be read-only, and any attempt to modify the data will result
+   in an exception.
+
+Remember that the default propagation behavior can vary depending on the transaction manager and platform you are using, but in most cases,
+ `PROPAGATION_REQUIRED` is the default choice. It's crucial to understand the different propagation behaviors and choose the appropriate one
+  based on your specific use case to ensure proper transactional behavior in your application.

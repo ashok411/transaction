@@ -1,0 +1,36 @@
+logging:
+  level.root: INFO
+  config: classpath:log4j2.xml
+
+spring:
+  application:
+    name: doos-logistics-service
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  jmx:
+    default-domain: ${spring.application.name}
+  profiles:
+    active: staging,preprod,prod,uat
+  cloud:
+    config:
+      enabled: false
+
+management:
+  info:
+    git:
+      mode: simple
+  endpoints:
+    web:
+      base-path: /
+  endpoint:
+    health:
+      show-details: always
+
+health:
+  config:
+    enabled: false
+
+
+application:
+  url:
+    prefix: doos.me

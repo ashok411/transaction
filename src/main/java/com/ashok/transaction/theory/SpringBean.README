@@ -1,0 +1,70 @@
+In Spring, a "bean" is an object that is managed by the Spring IoC (Inversion of Control) container. Beans are created,
+configured, and managed by the container, and they can be retrieved and used in various parts of your application.
+
+When I mentioned "For each bean" in the context of `@EnableTransactionManagement`, I meant that Spring looks for and processes
+ transaction-related annotations (such as `@Transactional`) on each bean that is present in the application context.
+
+Here's how it works:
+
+1. **Scanning for Beans**: During the application startup, Spring scans all the classes in the specified packages to find beans.
+ This is often done using annotations like `@ComponentScan` or `@SpringBootApplication`, which specify the base packages to scan.
+
+2. **Creating Beans**: For each class found during the scanning process that is annotated with Spring stereotype annotations
+ (e.g., `@Component`, `@Service`, `@Repository`, etc.), Spring creates a corresponding bean instance and registers it within the application context.
+
+3. **Transaction Annotations**: If a bean class is annotated with `@Transactional`, or if any of its methods are annotated with `@Transactional`,
+ Spring takes note of it.
+
+4. **Proxy Creation**: For each bean with transactional annotations, Spring creates a proxy around the actual bean.
+This proxy will intercept method calls to the target bean and handle transaction management.
+
+5. **Method Invocation**: Whenever a method is called on the transactional bean, the proxy intercepts the method call and applies the transactional
+ behavior as per the configured transactional attributes.
+
+So, when we say "For each bean," it means that Spring handles transaction management on a per-bean basis. Any method calls made to the
+transactional beans will go through the proxy, allowing Spring to apply the appropriate transactional behavior to each method based
+on the specified attributes.
+
+This approach allows you to control transactions at a fine-grained level by annotating individual methods or classes that need transactional support.
+ Spring will automatically manage the transactions for those specific beans and methods, while the rest of your application
+ can remain transaction-agnostic, simplifying your codebase and improving maintainability.
+
+
+ In Spring, beans can be created and managed in multiple ways, and `@Component`, `@Service`, and `@Repository` are just a few of the annotations used to define beans. These annotations are part of the Spring stereotype annotations, and they are commonly used to identify and register beans during component scanning.
+
+ However, Spring provides various other mechanisms to define beans, and not all beans need to be annotated with `@Component`, `@Service`, or `@Repository`. Here are some ways Spring can create beans:
+
+ 1. **Annotated Stereotypes**: As you mentioned, `@Component`, `@Service`, and `@Repository` are part of the stereotype annotations. When you use these annotations on a class, Spring recognizes it as a bean during component scanning and registers it in the application context.
+
+ 2. **@Bean Methods**: In Java configuration classes annotated with `@Configuration`, you can define methods annotated with `@Bean`. Each `@Bean`-annotated method returns an object, and Spring registers the return value as a bean.
+
+    ```java
+    @Configuration
+    public class MyConfig {
+        @Bean
+        public MyBean myBean() {
+            return new MyBean();
+        }
+    }
+    ```
+
+ 3. **XML Configuration**: In older versions of Spring or when using XML-based configurations, you can define beans using `<bean>`
+  elements in the XML file.
+
+    ```xml
+    <beans>
+        <bean id="myBean" class="com.example.MyBean"/>
+    </beans>
+    ```
+
+ 4. **Automatic Configuration**: Spring Boot provides auto-configuration based on classpath dependencies. It automatically configures
+  beans based on the presence of certain classes or dependencies.
+
+ 5. **Custom BeanPostProcessors**: Spring allows you to define custom `BeanPostProcessor` implementations.
+  These post-processors can manipulate or modify beans during their creation.
+
+ 6. **Factory Beans**: You can create custom FactoryBeans to programmatically define the creation logic for beans.
+
+ These are just some of the ways to create beans in Spring. The core principle is that Spring manages objects as beans within its IoC container,
+  regardless of how those beans are defined. The main requirement is that the objects need to be registered with the container so that they
+  can be managed and provided as dependencies when needed.

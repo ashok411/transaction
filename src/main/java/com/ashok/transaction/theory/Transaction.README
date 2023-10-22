@@ -1,0 +1,36 @@
+When you use the `@EnableTransactionManagement` annotation in a Spring Boot application, it enables Spring's transaction management features
+ for the application. This annotation is typically used in the main configuration class, annotated with `@Configuration`.
+
+Transaction management is a critical aspect of many applications, especially those dealing with databases and other resources
+ where data consistency is crucial. Transactions help ensure that a group of related database operations either succeed together or fail together,
+  ensuring data integrity.
+
+By using the `@EnableTransactionManagement` annotation, you enable Spring's ability to manage transactions declaratively using annotations.
+ When you use this annotation, Spring will create a proxy that intercepts the method calls and automatically starts and commits
+  or rolls back transactions as needed based on the configured rules.
+
+Key points to understand when using `@EnableTransactionManagement`:
+
+1. **Declarative Transaction Management**: Spring provides two types of transaction management: programmatic and declarative.
+With `@EnableTransactionManagement`, you are opting for declarative transaction management. This means you can use annotations like
+`@Transactional` to mark methods or classes for transactional behavior, and Spring will take care of starting and committing or rolling back
+ transactions for you.
+
+2. **Transactional Behavior**: When you annotate a method or class with `@Transactional`, Spring will wrap that method with transactional behavior.
+If an exception is thrown from within the transactional method, the transaction will be rolled back; otherwise, it will be committed.
+
+3. **Transaction Propagation**: You can specify the propagation behavior of transactions using the `propagation` attribute of the `@Transactional`
+ annotation. Propagation defines how transactions behave when they interact with other transactions.
+
+4. **Isolation Level**: The `isolation` attribute of the `@Transactional` annotation allows you to specify the isolation level for transactions.
+ Isolation levels control the visibility of changes made by one transaction to other concurrent transactions.
+
+5. **Rollback Rules**: You can define custom rollback rules using the `rollbackFor` and `noRollbackFor`
+ attributes of the `@Transactional` annotation. These attributes allow you to specify exceptions that trigger a rollback or
+  exceptions that do not cause a rollback.
+
+6. **Transaction Management Configuration**: Behind the scenes, Spring will create a transaction manager that will handle the actual transaction
+ operations. You need to configure the transaction manager bean in your Spring Boot application context.
+
+Overall, `@EnableTransactionManagement` is a powerful feature that simplifies transaction handling in Spring applications.
+It helps to keep your code cleaner and more focused on business logic, as Spring takes care of the underlying transactional concerns.

@@ -1,0 +1,3 @@
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+
+    If method calling another transactional method within the same class which has REQUIRES_NEW no transaction will be opened.
